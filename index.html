@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>classList 응용</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0;
+        }
+        a { 
+            text-decoration: none; 
+            color: #000;
+        }
+        body { background: #FFFFF0; }
+        h1 { margin-bottom: 20px; }
+        article { 
+            margin: 80px 0;
+            text-align: center;
+        }
+        button { 
+            padding: 10px 20px;
+            border-radius: 6px;
+            background: #BDB76B;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+    <article class="class01">
+        <h1>class toggle</h1>
+        <button>팝업버튼</button>
+        <div>
+            <p>파파팝팝팝팝업</p>
+        </div>
+        <style>
+            .class01>div{
+                display: none;
+                justify-content: center;
+                align-items: center;
+                width: 500px;
+                height: 500px;
+                background: rgba(0,0,0,0.9);
+                color: #fff;
+                font-size: 50px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .class01.active > div { 
+                display: flex;
+                z-index: 2; 
+            }
+        </style>
+        <script>
+            const elC01 = document.querySelector('.class01');
+            const elBtn1 = document.querySelector('.class01 button');
+            
+            let aa = 0; // 시작할 때 변수 aa에 0이 대입(들어감)
+            /*
+            elBtn1.onclick = function(){
+                if(aa == 0){
+                    elC01.classList.add('active');
+                    aa = 5; // 아무 숫자나 상관 없음 
+                } else {
+                    elC01.classList.remove('active');
+                    aa = 0;
+                }
+            } */
+
+            elBtn1.onclick = function(){
+                elC01.classList.toggle('active');
+            }
+        </script>
+    </article>
+    <article class="class02">
+        <h1>classList정리</h1>
+        <div>
+            A.classList.add(클라스명)        // 클래스 추가
+            A.classList.remove(클라스명)     // 클래스 삭제 
+            A.classList.toggle(클라스명)     // 클래스 추가/삭제 반복
+            A.classList.contain(클라스명)    // 클래스 유무 true/false(블린) 반환
+
+            // 한 개의 클래스만 제어 (프로퍼티) -->
+            A.className         // 클래스의 이름을 가져옴 
+            A.className = B     // A 클래스를 B 로 변경, 추가
+        </div>
+        <style>
+            .class02 > div { 
+                display: none;
+                white-space: pre-line; /* 줄 바꿈 */
+                background: #FFEFD5;
+                padding: 30px 0;
+            } 
+            .class02.active > div { display: block; }
+        </style>
+        <script>
+            const elC02 = document.querySelector('.class02');
+            // const elBtn2 = document.querySelector('.class02 > h1');
+
+            elC02.onmouseover = function(){
+                elC02.classList.add('active');
+            }
+
+            elC02.onmouseout = function(){
+                elC02.classList.remove('active');
+            }
+
+        </script>
+    </article>
+    
+    <article class="class03">
+        <h1>class toggle</h1>
+        <div class="card">
+            <div>
+                <p>
+                    <span>?</span> <!-- 앞면-->
+                    <span>777</span> <!-- 뒷면-->
+                </p>
+            </div>
+            <div>
+                <p>
+                    <span>?</span> <!-- 앞면-->
+                    <span>😥꽝😥</span> <!-- 뒷면-->
+                </p>
+            </div>
+            <div>
+                <p>
+                    <span>?</span> <!-- 앞면-->
+                    <span>🥳당첨🥳</span> <!-- 뒷면-->
+                </p>
+            </div>
+        </div>
+        <style>
+            .class03 { width: 60%; margin: auto;}
+            .class03 .card { 
+                display: flex; 
+                justify-content: space-between;
+            }
+            .card > div { 
+                width: 200px; 
+                height: 300px;
+            }
+            .card > div > p {
+                position: relative;
+                border: 1px solid #333;
+                width: 100%;
+                height: 100%;
+                border-radius: 20px;
+                transform-style: preserve-3d; /*3D 입체 변환 요소의 자식 요소도 3d 변환이 적용될지 설정*/
+                transition: 1s;
+                cursor: pointer;
+            }
+            .card > div > p > span {
+                backface-visibility: hidden; /*요소의 뒷면이 사용자를 향할 때 안 보이게*/
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                font-size: 3em;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .card > div > p > span:nth-child(1) {
+                background: #cfcfcf;
+                transform: rotate(0deg);
+                border-radius: 20px;
+            }
+            .card > div > p > span:nth-child(2) { 
+                background: orange;
+                transform: rotateY(-180deg);
+                border-radius: 20px;
+
+            }
+            
+            .card > div.active > p {
+                transform: rotateY(-180deg);
+            }
+        </style>
+        <script>
+            const elCard = document.querySelectorAll('.card > div');
+            console.log(elCard);
+
+            elCard.forEach(function(cc){
+                cc.onclick = function(){
+                    this.classList.toggle('active')
+                }
+            });
+            
+            /*
+            배열에 활용. 배열값(아이템) 각각에 실행 배열명. 
+            forEach(function(배열아이템){  
+                실행문 ... 
+            })
+            */
+        </script>
+    </article>
+
+    <article class="class04">
+        <h1>classList add/remove/contains</h1>
+        <a href="#">사이드바</a>
+        <nav>
+            <h2>😊로고😊</h2>
+            <ul>
+                <li>menu 01</li>
+                <li>menu 02</li>
+                <li>menu 03</li>
+                <li>menu 04</li>
+                <li>menu 05</li>
+            </ul>
+        </nav>
+        <style>
+            .class04 {}
+            .class04 a { 
+                display: inline-block;
+                padding: 10px 20px;
+                background: #BDB76B;
+                border-radius: 6px;
+                color: #fff;
+            }
+            .class04 nav { 
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 30%;
+                height: 100%;
+                background: rgba(255,255,255,1);
+                transform: translateX(100%); /* nav 자체가 기준 */
+                transition: 0.5s ease-in;
+            }
+            .class04 h2 { 
+                color: #BDB76B;
+                margin: 30px 0 20px 0;
+            }
+            .class04 nav li { 
+                list-style: none;
+                line-height: 4;
+            }
+
+            .class04 nav li:hover {
+                color: orange;
+            }
+            .class04 nav.active {transform: translateX(0%);}
+        </style>
+        <script>
+            const elBtn4 = document.querySelector('.class04 a');
+            const elNav = document.querySelector('.class04 nav');
+
+            elBtn4.onclick = function(e){  // function() 괄호 사이에 매개변수 (임의로) 넣어줌 
+               e.preventDefault(); /* 해당 이벤트에 대한 기본 동작을 실행하지 않게 함 / a = 제일 위로 올라가는 속성이 있음 / 이걸 막아줌 */
+
+               // elNav.classList.toggle('active');
+            
+
+                if(!elNav.classList.contains('active')){ //nav에 active클래스가 없을 때 
+                    elNav.classList.add('active');
+                } else {
+                    elNav.classList.remove('active');
+                }
+            }
+
+        </script>
+    </article>
+
+    <article class="class05">
+        <h1>classList add/remove</h1>
+        <div>
+            <button>Javascript</button>
+            <button>React</button>
+            <button>Bootstrape</button>
+        </div>
+        <style>
+            .class05 {}
+            .class05 button.active{
+                background: orange;
+                color: #000;
+            }
+        </style>
+        <script>
+            const elBtn5 = document.querySelectorAll('.class05 button');
+            console.log('elBtn5??', elBtn5);
+            
+            let num = 0; 
+
+            elBtn5.forEach(function(aa,bb){
+                aa.onclick = function(){
+                    elBtn5[num].classList.remove('active');
+                    this.classList.add('active');
+                    num = bb; // 직접 대입 불가해서 num = bb 로 넣어줌 
+                    console.log('현재bb는?', bb);
+                }
+            })
+
+            /*
+            forEach(function(배열아이템,순서){  
+                실행문 ... 
+            })
+            */
+        </script>
+    </article>
+
+    <article class="class06">
+        <h1>classList add/remove</h1>
+        <div>
+            <figure class="view">
+                <img src="img/sec2.png" alt="">
+            </figure> <!-- figure : 동영상이나 이미지를 묶어주는 것 -->
+            <figure class="list">
+                <img src="img/sec2.png" alt="" class="active">
+                <img src="img/sec5.jpg" alt="">
+                <img src="img/sec6.jpg" alt="">
+                <img src="img/sec8.jpg" alt="">
+            </figure>
+        </div>
+        <style>
+            .class06 {width: 700px; margin: 0 auto 150px; }
+            .class06 .view img { width: 100%;}
+            .class06 .list img { 
+                width: 20%; 
+                margin: 10px 3px;
+            }
+            .class06 .list img.active {
+                border: 2px solid orange;
+            }
+            
+        </style>
+        <script>
+            const elView = document.querySelector('.view img'); // 하나밖에 없어서 querySelector
+            const elBtn6 = document.querySelectorAll('.list img'); // 여러개 있어서 querySelectorAll
+
+            let num2 = 0;
+
+            elBtn6.forEach(function(img, index){
+                img.onclick = function(){
+                    elBtn6[num2].classList.remove('active');
+                    this.classList.add('active');
+                    num2 = index;
+
+                    elView.src = this.src;
+                }
+            })
+
+        </script>
+    </article>
+</body>
+</html>
